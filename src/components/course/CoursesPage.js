@@ -6,6 +6,7 @@ class CoursesPage extends React.Component {
 
   constructor (props, context) {
     super (props, context);
+    
     this.state = {
       course: { title: "" }
     };
@@ -23,19 +24,15 @@ class CoursesPage extends React.Component {
   } 
 
   onClickSave() {
-    this.props.dispatch (courseActions.createCourse (this.state.course));
-    // dispatch() function is injected by connect() by default
-    // if we didn't provide mapDispatchToProps function there
-    // alert (`Saving ${this.state.course.title}`);
+    this.props.createCourse (this.state.course);
   }
   
   courseRow (course, index) {
     return <div key={index}>{course.title}</div>;
   }
-  // used in array.map(courseRow) will return an array of <div> elements
+  // used in array.map (courseRow) will return <div> elements
 
   render () {
-    debugger;
     return (
       <div>
         <h1>Courses</h1>
@@ -45,7 +42,7 @@ class CoursesPage extends React.Component {
                onChange = {this.onTitleChange}
                value = {this.state.course.title} />
         <input type = "submit"
-               value="Save"
+               value = "Save"
                onClick = {this.onClickSave} />
       </div>
     );
@@ -53,27 +50,25 @@ class CoursesPage extends React.Component {
 }
 
 CoursesPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  courses: PropTypes.array.isRequired
+  courses: PropTypes.array.isRequired,
+  createCourse: PropTypes.func.isRequired
 };
 
 // state is state within the redux store
 function mapStateToProps (state, ownProps) {
-  debugger;
   return {
     courses: state.courses  // from rootReducer
   };
 }
 
-/*
+  //defines what actions will be available to the component
 function mapDispatchToProps (dispatch) {
   return {
-    createCourse(course) { dispatch (courseActions.createCourse(course)); }
+    createCourse: course => dispatch (courseActions.createCourse(course))
   };
 }
-*/
 
-export default connect(mapStateToProps /*, mapDispatchToProps*/) (CoursesPage);
+export default connect (mapStateToProps, mapDispatchToProps) (CoursesPage);
 
-// CoursesPage is now wrapped in connect() function 
-// in order to communicate with redux
+// wrap component in the connect() function 
+// in order to communicate component with with redux

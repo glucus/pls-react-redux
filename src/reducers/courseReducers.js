@@ -1,5 +1,5 @@
 /* 
-reducer is a function that takes in state and an action and returns new state
+reducer is a function that takes in state and action and returns a new state
 
 Reducers must be pure functions:
 -  have same output each time given same arguments
@@ -14,12 +14,13 @@ function myReducer (state, action) {
 }
 */
 
+import * as types from '../actions/actionTypes';
+
 export default function courseReducer (state = [], action) {
 
   switch (action.type) {
 
-    case 'CREATE_COURSE':
-      debugger;
+    case types.CREATE_COURSE:
       return [ ...state, Object.assign ({}, action.course) ];
     
     default: 
