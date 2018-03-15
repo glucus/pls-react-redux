@@ -4,15 +4,18 @@ import { render } from 'react-dom';
 import configureStore from './store/configureStore';
 import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
-import routes from './routes';  
+import routes from './routes';
+import { loadCourses } from './actions/courseActions';
 import './styles/styles.css';  // Webpack can import css 
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
+
 const store = configureStore();  // pass initialState if have a server-side
+store.dispatch (loadCourses());  // dispatch() if part of store
+
 
 // render (<Component />, on DOM node);
 // wrapping app in <Provider> component to connect react to redux
-
 render (
     <Provider store={store}>
       <Router history={browserHistory} routes={routes} />
