@@ -15,7 +15,7 @@ const CoursesListRow = ( {course} ) => {
     );
 };
 
-CoursesListRow.PropTypes = {
+CoursesListRow.propTypes = {
     course: PropTypes.object.isRequired
 };
 

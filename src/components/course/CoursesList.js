@@ -23,7 +23,7 @@ const CoursesList = ( {courses} ) => {
     );
 };
 
-CoursesList.PropTypes = {
+CoursesList.propTypes = {
     courses: PropTypes.array.isRequired
 };
 
