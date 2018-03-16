@@ -4,23 +4,47 @@ import { bindActionCreators } from 'redux';
 import * as courseActions from '../../actions/courseActions';
 import CourseForm from './CourseForm';
 
+// props: course, allAuthors, onSave, onChange, loading, errors
 class ManageCoursePage extends React.Component {
+  constructor (props, context) {
+    super (props, context);
+
+    this.state = {
+      course: Object.assign ({}, props.course),
+      errors: {}
+    };
+  }
+
+  // container component passes part of its {state} as {props} 
+  // to child presentation component <CourseForm/>
   render () {
     return (
       <div>
-        <CourseForm />
+        <CourseForm
+          allAuthors= {[]}
+          course={this.state.course}
+          errors={this.state.errors}
+        />
       </div>
     );
   }
 }
 
 ManageCoursePage.propTypes = {
-  // prop: PropTypes.string.isRequired  
+  course: PropTypes.object.isRequired
 };
 
  // state - from redux store
 function mapStateToProps (state, ownProps) {
-  return { state: state }; 
+  let course = {
+    id: '',
+    title: '',
+    watchHref: '',
+    authorId: '',
+    length: '',
+    category: ''
+  };
+  return { course: course };  // return state
 }
 
 function mapDispatchToProps (dispatch) {
