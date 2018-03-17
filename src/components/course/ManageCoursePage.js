@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as courseActions from '../../actions/courseActions';
+import * as authorsActions from '../../actions/authorActions';
 import CourseForm from './CourseForm';
 
 // props: course, allAuthors, onSave, onChange, loading, errors
@@ -11,6 +12,7 @@ class ManageCoursePage extends React.Component {
 
     this.state = {
       course: Object.assign ({}, props.course),
+     // authors: props.authors, 
       errors: {}
     };
   }
@@ -21,7 +23,7 @@ class ManageCoursePage extends React.Component {
     return (
       <div>
         <CourseForm
-          allAuthors= {[]}
+          authors={this.props.authors}
           course={this.state.course}
           errors={this.state.errors}
         />
@@ -30,8 +32,10 @@ class ManageCoursePage extends React.Component {
   }
 }
 
+// checking format of incoming data
 ManageCoursePage.propTypes = {
-  course: PropTypes.object.isRequired
+  course: PropTypes.object.isRequired,
+  authors: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
  // state - from redux store
@@ -44,12 +48,26 @@ function mapStateToProps (state, ownProps) {
     length: '',
     category: ''
   };
-  return { course: course };  // return state
+  
+  // transforming data coming from api to the format needed for dropdown
+  const authorsForDropdown = state.authors.map (
+    author => { 
+      return {
+        value: author.id,
+        text: author.firstName + ' ' + author.lastName
+      };
+  });
+
+  // returns state object
+  return { 
+    course: course, 
+    authors: authorsForDropdown 
+  };  
 }
 
 function mapDispatchToProps (dispatch) {
   return {
-    actions: bindActionCreators (courseActions, dispatch)
+    actions: bindActionCreators (courseActions, authorsActions, dispatch)
     // makes actions available as this.props.actions
   };
 }

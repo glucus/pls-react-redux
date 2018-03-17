@@ -3,7 +3,7 @@ import TextInput from '../common/TextInput';
 import SelectInput from '../common/SelectInput';
 
 // const ComponentName = (props) => {...};
-const CourseForm = ( {course, allAuthors, onSave, 
+const CourseForm = ( {course, authors, onSave, 
   onChange, loading, errors} ) => {
 
   return (
@@ -21,7 +21,7 @@ const CourseForm = ( {course, allAuthors, onSave,
           label = "Author"
           value = {course.authorId}
           defaultOption = "Select Author"
-          options = {allAuthors}
+          options = {authors}
           onChange = {onChange}
           error = {errors.authorId} 
         />
@@ -42,7 +42,7 @@ const CourseForm = ( {course, allAuthors, onSave,
         <button type="submit"
               disabled={loading}
               className="btn btn-primary">
-        {loading? 'Saving...' : 'Save'}
+        {loading ? 'Saving...' : 'Save'}
       </button>
       </form>
   );
@@ -50,7 +50,7 @@ const CourseForm = ( {course, allAuthors, onSave,
 
 CourseForm.propTypes = {
   course: PropTypes.object.isRequired, 
-  allAuthors: PropTypes.array,
+  authors: PropTypes.array,
   onSave: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   loading: PropTypes.boolean, 

@@ -21,13 +21,8 @@ export function loadCourses () {
 
         return getCourses.then(
             data => dispatch (loadCoursesSuccess (data)),
-            () => new Error ('Courses not loaded')
+            () => console.error (new Error ('courses not loaded'))
         );
-
-        /* getCourses.then(
-            data => dispatch (loadCoursesSuccess (data))
-           ).catch(error => throw (error))
-        */
     };
 }
 

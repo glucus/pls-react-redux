@@ -6,12 +6,21 @@ import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import routes from './routes';
 import { loadCourses } from './actions/courseActions';
+import { loadAuthors } from './actions/authorActions';
 import './styles/styles.css';  // Webpack can import css 
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 
-const store = configureStore();  // pass initialState if have a server-side
-store.dispatch (loadCourses());  // dispatch() if part of store
+// let store = createStore(reducer)
+const store = configureStore();  
+
+// creates store with configurations
+// pass initialState if have a server-side
+
+
+// dispatch() is part of store
+store.dispatch (loadCourses ());  
+store.dispatch (loadAuthors ());
 
 
 // render (<Component />, on DOM node);

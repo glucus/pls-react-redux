@@ -2,6 +2,8 @@ import React, {PropTypes} from 'react';
 
 
 // const ComponentName = (props) => {...};
+// option.value --> author's id
+
 const SelectInput = ({name, label, value, defaultOption, 
  options, onChange, error}) => {
 
@@ -14,7 +16,7 @@ const SelectInput = ({name, label, value, defaultOption,
               value={value}>
         <option value="">{defaultOption}</option>
         {options.map(
-          option => (<option key={option.id} value={option.value}>
+          option => (<option key={option.value} value={option.value}>
                       {option.text}
                      </option>) 
         )}

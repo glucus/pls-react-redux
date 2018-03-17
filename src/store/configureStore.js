@@ -3,6 +3,8 @@ import rootReducer from '../reducers';
 import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 import thunk from 'redux-thunk';
 
+// let store = createStore (reducer);
+
 export default function configureStore (initialState) {
   return createStore (
       rootReducer, 
@@ -10,3 +12,4 @@ export default function configureStore (initialState) {
       applyMiddleware (thunk, reduxImmutableStateInvariant())
   );
 }
+
