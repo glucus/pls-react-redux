@@ -2,11 +2,12 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as courseActions from '../../actions/courseActions';
-import * as authorsActions from '../../actions/authorActions';
+import * as authorActions from '../../actions/authorActions';
 import CourseForm from './CourseForm';
 
 // props: course, allAuthors, onSave, onChange, loading, errors
 class ManageCoursePage extends React.Component {
+
   constructor (props, context) {
     super (props, context);
 
@@ -15,6 +16,23 @@ class ManageCoursePage extends React.Component {
      // authors: props.authors, 
       errors: {}
     };
+
+    this.updateCourseState = this.updateCourseState.bind(this);
+    this.saveCourse = this.saveCourse.bind(this);
+  }
+  
+
+  // event handlers
+  updateCourseState (event) {
+    const field = event.target.name;
+    let course = Object.assign ({}, this.state.course);
+    course[field] = event.target.value;
+    return this.setState({course: course});
+  }
+
+  saveCourse (event) {
+    event.preventDefault();
+    this.props.saveCourse(this.state.course);
   }
 
   // container component passes part of its {state} as {props} 
@@ -23,9 +41,11 @@ class ManageCoursePage extends React.Component {
     return (
       <div>
         <CourseForm
-          authors={this.props.authors}
-          course={this.state.course}
-          errors={this.state.errors}
+          authors = {this.props.authors}
+          course = {this.state.course}
+          onChange = {this.updateCourseState}
+          onSave = {this.saveCourse}
+          errors = {this.state.errors}
         />
       </div>
     );
@@ -35,10 +55,15 @@ class ManageCoursePage extends React.Component {
 // checking format of incoming data
 ManageCoursePage.propTypes = {
   course: PropTypes.object.isRequired,
-  authors: PropTypes.arrayOf(PropTypes.object).isRequired
+  authors: PropTypes.array.isRequired,
+  loadAuthors: PropTypes.function,
+  saveCourse: PropTypes.function
 };
 
- // state - from redux store
+ // state - coming from redux store
+ // makes available properties of component's state 
+ // for passing them as props to child componets
+
 function mapStateToProps (state, ownProps) {
   let course = {
     id: '',
@@ -65,10 +90,11 @@ function mapStateToProps (state, ownProps) {
   };  
 }
 
+  // makes actions available to props 
 function mapDispatchToProps (dispatch) {
   return {
-    actions: bindActionCreators (courseActions, authorsActions, dispatch)
-    // makes actions available as this.props.actions
+    loadAuthors: () => dispatch (authorActions.loadAuthors()),
+    saveCourse: course => dispatch (courseActions.saveCourse(course))
   };
 }
 

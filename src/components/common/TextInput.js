@@ -7,7 +7,6 @@ const TextInput = (props) => {
     formClass += ' ' + 'has-error';
   }
 
-
   return (
     <div className = {formClass}>
       <label className="col-3" htmlFor={props.name}>

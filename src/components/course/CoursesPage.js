@@ -2,17 +2,28 @@ import React, {PropTypes} from 'react';
 import { connect } from 'react-redux';
 import * as courseActions from '../../actions/courseActions';
 import CoursesList from './CoursesList';
+import { browserHistory } from 'react-router';
 
 class CoursesPage extends React.Component {
 
   constructor (props, context) {
     super (props, context);
+    this.redirectToAddCoursePage = this.redirectToAddCoursePage.bind (this);
   }
-   
+  
+  redirectToAddCoursePage () {
+    browserHistory.push ('/course');
+  }
+
   render () {
     return (
       <div>
         <h1>Courses</h1>
+        <button type="submit"
+                className="btn btn-primary"
+                onClick={this.redirectToAddCoursePage}>
+          Add Course
+        </button>
         <CoursesList courses = {this.props.courses} />
       </div>
     );
@@ -21,7 +32,7 @@ class CoursesPage extends React.Component {
 
 CoursesPage.propTypes = {
   courses: PropTypes.array.isRequired,
-  createCourse: PropTypes.func.isRequired
+  saveCourse: PropTypes.func.isRequired
 };
 
 // state is state within the redux store
@@ -34,7 +45,7 @@ function mapStateToProps (state, ownProps) {
   //defines what actions will be available to the component
 function mapDispatchToProps (dispatch) {
   return {
-    createCourse: course => dispatch (courseActions.createCourse(course))
+    saveCourse: course => dispatch (courseActions.saveCourse(course))
   };
 }
 

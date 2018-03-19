@@ -17,16 +17,27 @@ function myReducer (state, action) {
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 
+
+  // state here is an array of courses (a slice of state object)
+  // --> function should return array of courses
+
 export default function courseReducer (state = initialState.courses, action) {
 
   switch (action.type) {
-    /*
-    case types.CREATE_COURSE:
-      return [ ...state, Object.assign ({}, action.course) ];
-    */
     
     case types.LOAD_COURSES_SUCCESS:
-      return action.courses; 
+      return action.courses;
+       
+    case types.CREATE_COURSE_SUCCESS: 
+      return [...state, Object.assign ({}, action.course)];
+      // immutable way of pushing pushing new elements -- to the clone of state array
+    
+    case types.UPDATE_COURSE_SUCCESS:
+      return [...state.filter (course => course.id !== action.course.id),
+               Object.assign ({}, action.course)];
+
+    // arr.filter() creates a new array with elements of arr 
+    // matching the creteria function
 
     default: 
       return state;

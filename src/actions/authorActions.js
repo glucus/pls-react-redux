@@ -8,13 +8,13 @@ export function loadAuthorsSuccess (authors) {
 // thunk for asynchronous call to api
 export function loadAuthors () {
 
-   return dispatch => {
+   return function (dispatch) {
 
     const getCourses = AuthorApi.getAllAuthors();
     // call to api returns a promise
 
     return getCourses.then(
-      (data) => dispatch (loadAuthorsSuccess (data)),
+      data => dispatch (loadAuthorsSuccess (data)),
       () => console.error (new Error ('authors not loaded'))
     );
 

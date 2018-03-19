@@ -11,9 +11,9 @@ const SelectInput = ({name, label, value, defaultOption,
     <div className = "form-group row">
       <label className="col-3" htmlFor={name}>{label}</label>
       <select className="form-control col-9" 
-              type="checkbox"
-              name={name}
-              value={value}>
+              name = {name}
+              value = {value}
+              onChange = {onChange}>
         <option value="">{defaultOption}</option>
         {options.map(
           option => (<option key={option.value} value={option.value}>
