@@ -28,7 +28,7 @@ TextInput.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   value: PropTypes.string,
-  onChange: PropTypes.function,
+  onChange: PropTypes.func.isRequired,
   error: PropTypes.string
 };
 

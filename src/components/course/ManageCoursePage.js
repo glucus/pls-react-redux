@@ -20,6 +20,15 @@ class ManageCoursePage extends React.Component {
     this.updateCourseState = this.updateCourseState.bind(this);
     this.saveCourse = this.saveCourse.bind(this);
   }
+
+  // react lifecycle function will be called any time props might have changed
+  // to populate form when existing course is loaded directly
+
+  componentWillReceiveProps (nextProps) {
+    if (this.props.course.id != nextProps.course.id) {
+      this.setState ( {course: Object.assign ({}, nextProps.course)} );
+    }
+  }
   
 
   // event handlers
@@ -33,6 +42,7 @@ class ManageCoursePage extends React.Component {
   saveCourse (event) {
     event.preventDefault();
     this.props.saveCourse(this.state.course);
+    this.context.router.push('/courses');  // redirecting after save
   }
 
   // container component passes part of its {state} as {props} 
@@ -56,23 +66,37 @@ class ManageCoursePage extends React.Component {
 ManageCoursePage.propTypes = {
   course: PropTypes.object.isRequired,
   authors: PropTypes.array.isRequired,
-  loadAuthors: PropTypes.function,
-  saveCourse: PropTypes.function
+  loadAuthors: PropTypes.func.isRequired,
+  saveCourse: PropTypes.func.isRequired
 };
+
+// pulls React Router context so router is availabe on this.context.router.
+ManageCoursePage.contextTypes = {
+  router: PropTypes.object
+};
+
+function getCouseById (courses, id) {
+  const coursesFound = courses.filter (course => course.id == id);
+  // filter returns an array
+  if (coursesFound.length > 0) return coursesFound[0];
+  else return null;
+}
 
  // state - coming from redux store
  // makes available properties of component's state 
  // for passing them as props to child componets
 
 function mapStateToProps (state, ownProps) {
-  let course = {
-    id: '',
-    title: '',
-    watchHref: '',
-    authorId: '',
-    length: '',
-    category: ''
-  };
+
+  let course = {id: '', title: '', watchHref: '', authorId: '', length: '', category: ''};
+
+  const courseId = ownProps.params.id;
+  // from the url '/course/:id' in the route for this component
+  
+  // for state.courses to be loaded before getCourseById function call
+  if (courseId && state.courses.length > 0) {
+    course = getCouseById (state.courses, courseId);
+  }
   
   // transforming data coming from api to the format needed for dropdown
   const authorsForDropdown = state.authors.map (
