@@ -50,13 +50,19 @@ class ManageCoursePage extends React.Component {
   saveCourse (event) {
     event.preventDefault();
     this.setState( {saving: true} );
-    this.props.saveCourse(this.state.course).then(
-      () => this.redirect()
-    ); 
+    this.props.saveCourse(this.state.course)
+      .then (
+        () => this.redirect()
+     ).catch (err => {
+       toastr.error (err);
+       this.setState ( {saving: false} );
+      });
+    }
+
     // won't redirect to the courses page until 
     // promise returned by Api call is resolved
     // saveCourse() action is a thunk - makes asyncronous call to api
-  }
+
 
   // container component passes part of its {state} as {props} 
   // to child presentation component <CourseForm/>
