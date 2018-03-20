@@ -1,5 +1,6 @@
 import * as types from './actionTypes';
 import CourseApi from '../api/mockCourseApi';
+import { beginAjaxCall } from './ajaxStatusActions';
 
 
 export function loadCoursesSuccess (courses) {
@@ -15,12 +16,12 @@ export function createCourseSuccess (course) {
 }
   
 
-
 // thunks -- return function (dispatch) 
 
 export function loadCourses () {
     return function (dispatch) {
-
+        
+        dispatch (beginAjaxCall());
         const getCourses = CourseApi.getAllCourses();  
         // api call returns a promise
         // or can make ajax call here instead of calling api
@@ -35,6 +36,8 @@ export function loadCourses () {
 
 export function saveCourse (course) {
   return function (dispatch) {
+
+    dispatch (beginAjaxCall());
 
     return CourseApi.saveCourse(course).then(
         data => { 

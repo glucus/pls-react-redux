@@ -1,22 +1,27 @@
 import React, {PropTypes} from 'react';
 // {PropTypes} - to run typechecking on the props for a component
 import Header from './common/Header';
+import { connect } from 'react-redux';
 
 class App extends React.Component {
   render () {
     return (
       <div className = "container-fluid">
-        <Header />
+        <Header loading = {this.props.loading} />
         {this.props.children}   
       </div>
     );
   }
 }
 
+// child components will be passed by React router as properties
 App.propTypes = {
-  children: PropTypes.object.isRequired
+  children: PropTypes.object.isRequired, 
+  loading: PropTypes.bool.isRequired
 };
 
-//child components will be passed by React router as properties
+function mapStateToProps (state) {
+  return {loading: state.ajaxCallsInProgress > 0};
+}
 
-export default App;
+export default connect (mapStateToProps) (App);

@@ -1,11 +1,13 @@
 import {combineReducers} from 'redux';
 import courseReducers from './courseReducer';  // importing default with alias
 import authorReducers from './authorReducer';
+import ajaxStatusReducer from './ajaxStatusReducer';
 
 const rootReducer = combineReducers ({
   courses: courseReducers,
-  authors: authorReducers
-  // or can use alias in named import and then here {courses, authors, etc...}
+  authors: authorReducers,
+  ajaxCallsInProgress: ajaxStatusReducer
+  // or can use alias in named import: {courses, authors, etc...}
 });
 
 export default rootReducer;

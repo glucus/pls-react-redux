@@ -4,7 +4,7 @@ import SelectInput from '../common/SelectInput';
 
 // const ComponentName = (props) => {...};
 const CourseForm = (
-  {course, authors, onSave, onChange, loading, errors}
+  {course, authors, onChange, onSave, saving, errors}
 ) => {
 
   return (
@@ -42,10 +42,10 @@ const CourseForm = (
         />
         <button 
           type = "submit"
-          disabled = {loading}
+          disabled = {saving}
           onClick = {onSave}
           className = "btn btn-primary">
-        {loading ? 'Saving...' : 'Save'}
+        {saving ? 'Saving...' : 'Save'}
       </button>
       </form>
   );
@@ -54,9 +54,9 @@ const CourseForm = (
 CourseForm.propTypes = {
   course: PropTypes.object.isRequired, 
   authors: PropTypes.array,
-  onSave: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
-  loading: PropTypes.bool, 
+  onSave: PropTypes.func.isRequired,
+  saving: PropTypes.bool, 
   errors: PropTypes.object
 };
 

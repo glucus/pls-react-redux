@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import * as courseActions from '../../actions/courseActions';
 import * as authorActions from '../../actions/authorActions';
 import CourseForm from './CourseForm';
+import toastr from 'toastr';
 
 // props: course, allAuthors, onSave, onChange, loading, errors
 class ManageCoursePage extends React.Component {
@@ -11,10 +12,11 @@ class ManageCoursePage extends React.Component {
   constructor (props, context) {
     super (props, context);
 
+    // local state (additional to the one that is in redux store)
     this.state = {
-      course: Object.assign ({}, props.course),
-     // authors: props.authors, 
-      errors: {}
+      course: Object.assign ({}, props.course),  // comes from redux store
+      errors: {},
+      saving: false
     };
 
     this.updateCourseState = this.updateCourseState.bind(this);
@@ -39,10 +41,21 @@ class ManageCoursePage extends React.Component {
     return this.setState({course: course});
   }
 
+  redirect () {
+    this.context.router.push ('/courses');
+    toastr.success ('Course saved');
+    this.setState ({saving: false});
+  }
+
   saveCourse (event) {
     event.preventDefault();
-    this.props.saveCourse(this.state.course);
-    this.context.router.push('/courses');  // redirecting after save
+    this.setState( {saving: true} );
+    this.props.saveCourse(this.state.course).then(
+      () => this.redirect()
+    ); 
+    // won't redirect to the courses page until 
+    // promise returned by Api call is resolved
+    // saveCourse() action is a thunk - makes asyncronous call to api
   }
 
   // container component passes part of its {state} as {props} 
@@ -51,10 +64,11 @@ class ManageCoursePage extends React.Component {
     return (
       <div>
         <CourseForm
-          authors = {this.props.authors}
           course = {this.state.course}
+          authors = {this.props.authors}
           onChange = {this.updateCourseState}
           onSave = {this.saveCourse}
+          saving = {this.state.saving}
           errors = {this.state.errors}
         />
       </div>
@@ -82,10 +96,7 @@ function getCouseById (courses, id) {
   else return null;
 }
 
- // state - coming from redux store
- // makes available properties of component's state 
- // for passing them as props to child componets
-
+ // state - comes from redux store
 function mapStateToProps (state, ownProps) {
 
   let course = {id: '', title: '', watchHref: '', authorId: '', length: '', category: ''};
