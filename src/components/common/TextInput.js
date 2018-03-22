@@ -18,8 +18,8 @@ const TextInput = (props) => {
              value={props.value}
              onChange={props.onChange}>
       </input>
-      {props.error && <div className="alert alert-danger">
-                      {props.error}</div>}
+      {props.error && 
+      <div className="alert alert-danger col-9 offset-3">{props.error}</div>}
     </div>
   );
 };

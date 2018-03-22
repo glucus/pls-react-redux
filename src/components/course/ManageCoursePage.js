@@ -6,8 +6,10 @@ import * as authorActions from '../../actions/authorActions';
 import CourseForm from './CourseForm';
 import toastr from 'toastr';
 
-// props: course, allAuthors, onSave, onChange, loading, errors
-class ManageCoursePage extends React.Component {
+// export here is for exporting an version of component
+// that is not connected to redux store for testing 
+
+export class ManageCoursePage extends React.Component {
 
   constructor (props, context) {
     super (props, context);
@@ -47,8 +49,27 @@ class ManageCoursePage extends React.Component {
     this.setState ({saving: false});
   }
 
+
+  courseFormIsValid () {
+    let formIsValid = true;
+    let errors = {};
+
+    if (this.state.course.title.length < 5) {
+      errors.title = 'Title must be at least 5 characters';
+      formIsValid = false;
+    }
+    this.setState ({errors: errors});
+    return formIsValid; 
+  }
+
+
   saveCourse (event) {
     event.preventDefault();
+
+    if ( !this.courseFormIsValid() ) {
+      return;
+    }
+
     this.setState( {saving: true} );
     this.props.saveCourse(this.state.course)
       .then (
