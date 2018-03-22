@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import * as courseActions from '../../actions/courseActions';
 import * as authorActions from '../../actions/authorActions';
 import CourseForm from './CourseForm';
+import { authorsForDropdown } from '../../selectors/selectors';
 import toastr from 'toastr';
 
 // export here is for exporting an version of component
@@ -136,19 +137,10 @@ function mapStateToProps (state, ownProps) {
     course = getCouseById (state.courses, courseId);
   }
   
-  // transforming data coming from api to the format needed for dropdown
-  const authorsForDropdown = state.authors.map (
-    author => { 
-      return {
-        value: author.id,
-        text: author.firstName + ' ' + author.lastName
-      };
-  });
-
   // returns state object
   return { 
     course: course, 
-    authors: authorsForDropdown 
+    authors: authorsForDropdown (state.authors)
   };  
 }
 
